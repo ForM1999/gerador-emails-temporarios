@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Gerador de E-mails Temporários</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center; }
+        input, button { padding: 10px; margin: 10px; width: 80%; max-width: 300px; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Gerador de E-mails Temporários</h1>
+    <input type="text" id="customName" placeholder="Nome personalizado (opcional)">
+    <button onclick="generateEmail()">Gerar E-mail</button>
+    <h3 id="emailResult"></h3>
+
+    <script>
+        async function generateEmail() {
+            const customName = document.getElementById("customName").value || "usuario" + Math.floor(Math.random() * 1000);
+            const response = await fetch('https://api.mail.tm/domains');
+            const domains = await response.json();
+            const domain = domains["hydra:member"][0].domain;
+
+            const email = `${customName}@${domain}`;
+            document.getElementById("emailResult").textContent = `Seu e-mail temporário: ${email}`;
+        }
+    </script>
+</body>
+</html>
